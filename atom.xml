@@ -6,7 +6,7 @@
   <link href="https://leasurton.github.io/atom.xml" rel="self"/>
   
   <link href="https://leasurton.github.io/"/>
-  <updated>2023-10-30T14:58:37.173Z</updated>
+  <updated>2023-10-30T14:59:22.692Z</updated>
   <id>https://leasurton.github.io/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="https://leasurton.github.io/posts/d37a56bd.html"/>
     <id>https://leasurton.github.io/posts/d37a56bd.html</id>
     <published>2023-10-29T15:48:46.110Z</published>
-    <updated>2023-10-30T14:58:37.173Z</updated>
+    <updated>2023-10-30T14:59:22.692Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="汇编语言介绍"><a href="#汇编语言介绍" class="headerlink" title="汇编语言介绍"></a>汇编语言介绍</h1><p>汇编语言是一种计算机语言，它与机器语言相对应，使用符号代替数字和指令代码，更容易理解和编写。汇编语言允许程序员以更低层次的方式操作计算机硬件，使用它可以编写高效、精确的系统程序。</p><p> 汇编代码通常由许多指令组成，每个指令都代表了一种特定的操作。下面是几个常用的汇编指令：</p><blockquote><p>MOV：将数据从一个位置复制到另一个位置。例如，<code>MOV AX, BX</code> 将 <code>BX</code> 寄存器的值复制到 <code>AX</code> 寄存器中。</p></blockquote><blockquote><p>ADD&#x2F;SUB：在寄存器或内存中执行加法或减法操作。例如，<code>ADD AX, 1</code> 将 <code>AX</code> 寄存器中的值加上常数 <code>1</code>。</p></blockquote><blockquote><p>CMP：比较两个值并设置标志位。例如， <code>CMP AX, BX</code> 比较 <code>AX</code> 和 <code>BX</code> 寄存器的值，并根据结果设置标志位。</p></blockquote><blockquote><p>JMP：无条件跳转到指定的地址。例如，<code>JMP 0x1234</code> 将程序控制权转移到内存地址 <code>0x1234</code> 处。</p></blockquote><blockquote><p>JE&#x2F;JNE：有条件地跳转到指定的地址，取决于先前设置的标志位。例如，JE label 如果前面的比较结果为相等，则跳转到标记为 label 的位置。</p></blockquote><hr><p> 汇编代码通常以十六进制或十进制表示，其中每个指令和操作数都有一个特定的编码。例如，以下是一段简单的汇编代码：</p><blockquote><p>MOV AX, 0<br>MOV BX, 1<br>ADD AX, BX</p></blockquote><p>这段代码将 <code>0</code> 存储在 <code>AX</code> 寄存器中，<code>1</code> 存储在 <code>BX</code> 寄存器中，然后将它们相加并将结果存储回 <code>AX</code> 寄存器中。反汇编该代码将得到以下结果：</p><blockquote><p>B8 00 00 BB 01 00 01 C3<br>其中，<code>B8</code> 表示 <code>MOV AX, 0</code>，<code>BB</code> 表示 <code>MOV BX, 1</code>，<code>01</code> 表示 <code>ADD AX, BX</code>，<code>C3</code> 表示 <code>RET</code>（返回）。</p></blockquote><p>需要注意的是，汇编代码可以在不同的计算机架构和操作系统上具有不同的语法和指令。因此，在编写和阅读汇编代码时，必须了解所使用的硬件平台和操作系统，并使用正确的语法和指令。</p><h1 id="IDA"><a href="#IDA" class="headerlink" title="IDA"></a>IDA</h1><p>这是一篇ICS的汇编语言以及反汇编部分的总览，持续更新中~<br>后续也会有其他部分以及Lab的博文更新~<br>欢迎关注作者博客: <a href="https://leasurton.github.io/">https://leasurton.github.io/</a></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="汇编语言介绍"><a href="#汇编语言介绍" class="headerlink" title="汇编语言介绍"></a>汇编语言介绍</h1><p>汇编语言是一种计算机语言，它与机器语言相对应，使用符号代替数字和指令代码，更容易理解和编写。汇编语言允许程序员以更低层次的方式操作计算机硬件，使用它可以编写高效、精确的系统程序。</p><p> 汇编代码通常由许多指令组成，每个指令都代表了一种特定的操作。下面是几个常用的汇编指令：</p><blockquote><p>MOV：将数据从一个位置复制到另一个位置。例如，<code>MOV AX, BX</code> 将 <code>BX</code> 寄存器的值复制到 <code>AX</code> 寄存器中。</p></blockquote><blockquote><p>ADD&#x2F;SUB：在寄存器或内存中执行加法或减法操作。例如，<code>ADD AX, 1</code> 将 <code>AX</code> 寄存器中的值加上常数 <code>1</code>。</p></blockquote><blockquote><p>CMP：比较两个值并设置标志位。例如， <code>CMP AX, BX</code> 比较 <code>AX</code> 和 <code>BX</code> 寄存器的值，并根据结果设置标志位。</p></blockquote><blockquote><p>JMP：无条件跳转到指定的地址。例如，<code>JMP 0x1234</code> 将程序控制权转移到内存地址 <code>0x1234</code> 处。</p></blockquote><blockquote><p>JE&#x2F;JNE：有条件地跳转到指定的地址，取决于先前设置的标志位。例如，JE label 如果前面的比较结果为相等，则跳转到标记为 label 的位置。</p></blockquote><hr><p> 汇编代码通常以十六进制或十进制表示，其中每个指令和操作数都有一个特定的编码。例如，以下是一段简单的汇编代码：</p><blockquote><p>MOV AX, 0<br>MOV BX, 1<br>ADD AX, BX</p></blockquote><p>这段代码将 <code>0</code> 存储在 <code>AX</code> 寄存器中，<code>1</code> 存储在 <code>BX</code> 寄存器中，然后将它们相加并将结果存储回 <code>AX</code> 寄存器中。反汇编该代码将得到以下结果：</p><blockquote><p>B8 00 00 BB 01 00 01 C3</p></blockquote><p>其中，<code>B8</code> 表示 <code>MOV AX, 0</code>，<code>BB</code> 表示 <code>MOV BX, 1</code>，<code>01</code> 表示 <code>ADD AX, BX</code>，<code>C3</code> 表示 <code>RET</code>（返回）。</p><p>需要注意的是，汇编代码可以在不同的计算机架构和操作系统上具有不同的语法和指令。因此，在编写和阅读汇编代码时，必须了解所使用的硬件平台和操作系统，并使用正确的语法和指令。</p><h1 id="IDA"><a href="#IDA" class="headerlink" title="IDA"></a>IDA</h1><p>这是一篇ICS的汇编语言以及反汇编部分的总览，持续更新中~<br>后续也会有其他部分以及Lab的博文更新~<br>欢迎关注作者博客: <a href="https://leasurton.github.io/">https://leasurton.github.io/</a></p>]]></content>
     
     
       
