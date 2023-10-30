@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://leasurton.github.io/posts/d37a56bd.html</loc>
+    
+    <lastmod>2023-10-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://leasurton.github.io/posts/7f852adc.html</loc>
+    
+    <lastmod>2023-10-30</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://leasurton.github.io/messageboard/</loc>
     
     <lastmod>2023-10-30</lastmod>
@@ -86,24 +104,6 @@
     <loc>https://leasurton.github.io/tags/</loc>
     
     <lastmod>2023-10-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://leasurton.github.io/posts/d37a56bd.html</loc>
-    
-    <lastmod>2023-10-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://leasurton.github.io/posts/7f852adc.html</loc>
-    
-    <lastmod>2023-10-29</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
