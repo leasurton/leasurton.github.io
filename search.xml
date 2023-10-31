@@ -1,6 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>ICS DataLab 题目及解析</title>
+    <url>/posts/d61bb93b.html</url>
+    <content><![CDATA[<h2 id="DataLab题目列表、解析以及代码"><a href="#DataLab题目列表、解析以及代码" class="headerlink" title="DataLab题目列表、解析以及代码"></a>DataLab题目列表、解析以及代码</h2><h3 id="bitXor"><a href="#bitXor" class="headerlink" title="bitXor"></a>bitXor</h3><blockquote>
+<p> bitXor - x^y using only ~ and &amp;<br>   Example: bitXor(4, 5) &#x3D; 1<br>  Legal ops: ~ &amp;<br>  Max ops: 14<br>  Rating: 1</p>
+</blockquote>
+<blockquote>
+<p>用 ~ 和 &amp; 表示 | ，再用~ &amp; | 表示 ^<br>摩尔根定理；~(~x &amp; ~y)&#x3D; x | y<br>比较x&amp;y 与 ~x&amp;~y的结果</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int bitXor(int x, int y) &#123;</span><br><span class="line">return ~(~x &amp; ~y) &amp; ~(x &amp; y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="thirdBits"><a href="#thirdBits" class="headerlink" title="thirdBits"></a>thirdBits</h3><blockquote>
+<p>thirdBits - return word with every third bit (starting from the LSB) set to 1<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 8<br>  Rating: 1</p>
+</blockquote>
+<blockquote>
+<p>每三位置1，则预先设置0100 1001进行移位，左移时右边空缺补0，空缺位置与未移位前进行|运算则可以得到补足。<br>由于0100 1001是满足要求的其中一个字节，同时左移时右边空缺补0，则可以得知移位后仅需使得相邻两个字节之间，仍然满足每三位置1<br>则进行n次移位操作后，可以得到满足题目要求的结果</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int thirdBits(void) &#123;</span><br><span class="line">int x = 0x49; //0100 1001</span><br><span class="line">x = (x &lt;&lt; 9) | x; //1001 0010 0100 1001</span><br><span class="line">return (x &lt;&lt; 18) | x; //0100 1001 0010 0100 1001 0010 0100 1001</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fitsShort"><a href="#fitsShort" class="headerlink" title="fitsShort"></a>fitsShort</h3><blockquote>
+<p>fitsShort - return 1 if x can be represented as a<br>  16-bit, two’s complement integer.<br>  Examples: fitsShort(33000) &#x3D; 0, fitsShort(-32768) &#x3D; 1<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 8<br>  Rating: 1</p>
+</blockquote>
+<blockquote>
+<p>是否能表示16位二进制补码整数，要看是否在范围内-32768~32767<br>正数最大为 0111 1111 1111 1111 负数最大为1000 0000 0000 0000<br>正数负数的符号位不同即后16位的最高位不同<br>但是int类型不止16位，则对于int x前置有其符号位<br>根据这个关系进行判断<br>如果x不在-32768~32767范围内但除后16位外全是符号位，此时则看其在16位的最&gt; 高位与其在int类型的符号位是否相同<br>如果x不在-32768~32767范围内且除后16位外并非全是符号位，此时 x&gt;&gt;15 与 x&gt;&gt;16的 ^ 则会出现不是在最后一位的1，此时取!则为0</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int fitsShort(int x) &#123;</span><br><span class="line">  int y = x &gt;&gt; 15; // 获取符号位</span><br><span class="line">  return !(y ^ (x &gt;&gt; 16)); // 如果x可以用16位表示，那么右移16位后符号位不变，异或结果为0，取反得到1；否则异或结果为1，取反得到0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="isTmax"><a href="#isTmax" class="headerlink" title="isTmax"></a>isTmax</h3><blockquote>
+<p>isTmax - returns 1 if x is the maximum, two’s complement number,<br>    and 0 otherwise<br>  Legal ops: ! ~ &amp; ^ | +<br>  Max ops: 10<br>  Rating: 1</p>
+</blockquote>
+<blockquote>
+<p>max 0111 1111 1111 1111 没有更高位<br>区别max 与 例如 0011 1111 1111 1111 则需要判断最高位，通过x+1，若最高位变化，则max<br>若x加上1后与x本身进行 ^ 运算，则没有变化的位置取1，其余取0，max为全1<br>而需要排除全1的影响，则全1按位取反后为0，其余情况不为0，但无法使用逻辑或||，所以只能逻辑取反，全1为1，其余为0<br>（同时由于输出为0或1，只能通过逻辑取反做到）<br>如此与所需要的返回值相异，将排除全1的判断与区别max与其余情况的判断整合后需再次逻辑取反<br>因此区别max与其余情况的判断也需要与所需要的返回值相异，才能在逻辑取反后符合要求<br>所以需要使max在区别操作中为全0，x+1按位取反再与x进行 ^ 操作</p>
+</blockquote>
+<blockquote>
+<p>max 0111 1111 1111 1111 没有更高位,加1(或者取反)则变为min 1000 0000 0000 0000（这里不知道为什么加1不通过，~x也不通过）×，不能用移位运算<br>所以用x+1与1&lt;&lt;31比较，异或，如果所有位都相同，则x为max，得到值0，否则不为max，得到非0值<br>再通过逻辑取反!返回0或1</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int isTmax(int x) &#123;</span><br><span class="line">  int y = !(~x); // 如果x为-1,(即所有位全位1，没有更高位的0) 则y为1，否则y为0，这里是为了排除-1的干扰</span><br><span class="line">  return !((~(x+1)^x)|y); // 给x加1，再翻转，最后和自身取异或，如果x为Tmax，则返回1，否则返回0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fitsBits"><a href="#fitsBits" class="headerlink" title="fitsBits"></a>fitsBits</h3><blockquote>
+<p>fitsBits - return 1 if x can be represented as an<br> n-bit, two’s complement integer.<br>  1 &lt;&#x3D; n &lt;&#x3D; 32<br>  Examples: fitsBits(5,3) &#x3D; 0, fitsBits(-4,3) &#x3D; 1<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 15<br>  Rating: 2</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int fitsBits(int x, int n) &#123;</span><br><span class="line">  int shift = 33 + ~n;</span><br><span class="line">  return !(x ^ ((x &lt;&lt; shift) &gt;&gt; shift));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="upperBits"><a href="#upperBits" class="headerlink" title="upperBits"></a>upperBits</h3><blockquote>
+<p>upperBits - pads n upper bits with 1’s<br> You may assume 0 &lt;&#x3D; n &lt;&#x3D; 32<br> Example: upperBits(4) &#x3D; 0xF0000000<br> Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br> Max ops: 10<br> Rating: 1</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int upperBits(int n) &#123;</span><br><span class="line">  int t = !!n;</span><br><span class="line">  int p = t &lt;&lt; 31;</span><br><span class="line">  return p &gt;&gt; (n + ~0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="anyOddBit"><a href="#anyOddBit" class="headerlink" title="anyOddBit"></a>anyOddBit</h3><blockquote>
+<p>anyOddBit - return 1 if any odd-numbered bit in word set to 1<br>  Examples anyOddBit(0x5) &#x3D; 0, anyOddBit(0x7) &#x3D; 1<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 12<br>  Rating: 2</p>
+</blockquote>
+<figure class="highlight plaintext"><figcaption><span>anyOddBit(int x) &#123;</span></figcaption><table><tr><td class="code"><pre><span class="line">  int mask_16 = (mask_8 &lt;&lt; 8) | mask_8;    // 拓展成16位 1010 1010 1010 1010</span><br><span class="line">  int mask_32 = (mask_16 &lt;&lt; 16) | mask_16; // 拓展成32位 1010 1010 1010 1010 1010 1010 1010 1010</span><br><span class="line">  return !!(x &amp; mask_32);                  // 如果x的任意奇数位为1，那么x与掩码按位与的结果不为0，取反后为1；否则为0</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="byteSwap"><a href="#byteSwap" class="headerlink" title="byteSwap"></a>byteSwap</h3><blockquote>
+<p>byteSwap - swaps the nth byte and the mth byte<br> Examples: byteSwap(0x12345678, 1, 3) &#x3D; 0x56341278<br>           byteSwap(0xDEADBEEF, 0, 2) &#x3D; 0xDEEFBEAD<br> You may assume that 0 &lt;&#x3D; n &lt;&#x3D; 3, 0 &lt;&#x3D; m &lt;&#x3D; 3<br> Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br> Max ops: 25<br> Rating: 2</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int byteSwap(int x, int n, int m) &#123;</span><br><span class="line">  int shift_n = n &lt;&lt; 3; // 移动8*n位</span><br><span class="line">  int shift_m = m &lt;&lt; 3; // 移动8*m位</span><br><span class="line">  int diff = ((x &gt;&gt; shift_m) ^ (x &gt;&gt; shift_n)) &amp; 0xFF; // 通过将x向右移动n字节和m字节，然后异或它们的结果，找到不同的字节</span><br><span class="line">  return x ^ (diff &lt;&lt; shift_n) ^ (diff &lt;&lt; shift_m);    // 将不同的字节位置互换，然后通过异或运算将它们应用到原来的x</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="absVal"><a href="#absVal" class="headerlink" title="absVal"></a>absVal</h3><blockquote>
+<p>absVal - absolute value of x<br>  Example: absVal(-1) &#x3D; 1.<br>  You may assume -TMax &lt;&#x3D; x &lt;&#x3D; TMax<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 10<br>  Rating: 4</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int absVal(int x) &#123;</span><br><span class="line">  int s = x &gt;&gt; 31; // 通过将 x 的符号位右移，得到一个全0或全1的值，符号位为0时右移得到0，符号位为1时右移得到-1。</span><br><span class="line">  // 如果 x 为正数，s 为0，因此 x + 0 = x，不改变 x。</span><br><span class="line">  // 如果 x 为负数，s 为-1，因此 x - 1 与 -1 做异或操作相当于将符号位取反并加1，实现了从负数到正数的转换。</span><br><span class="line">  return (x + s) ^ s;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="divpwr2"><a href="#divpwr2" class="headerlink" title="divpwr2"></a>divpwr2</h3><blockquote>
+<p>divpwr2 - Compute x&#x2F;(2^n), for 0 &lt;&#x3D; n &lt;&#x3D; 30<br> Round toward zero<br>  Examples: divpwr2(15,1) &#x3D; 7, divpwr2(-33,4) &#x3D; -2<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 15<br>  Rating: 2</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">int divpwr2(int x, int n) &#123;</span><br><span class="line">  int t = x &gt;&gt; 31;</span><br><span class="line">  return x + (t ^ t &lt;&lt; n) &gt;&gt; n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="float-neg"><a href="#float-neg" class="headerlink" title="float_neg"></a>float_neg</h3><blockquote>
+<p>float_neg - Return bit-level equivalent of expression -f for<br>  floating point argument f.<br>  Both the argument and result are passed as unsigned int’s, but<br>  they are to be interpreted as the bit-level representations of<br>  single-precision floating point values.<br>  When argument is NaN, return argument.<br>  Legal ops: Any integer&#x2F;unsigned operations incl. ||, &amp;&amp;. also if, while<br>  Max ops: 10<br>  Rating: 2</p>
+</blockquote>
+<h3 id="logicalNeg"><a href="#logicalNeg" class="headerlink" title="logicalNeg"></a>logicalNeg</h3><blockquote>
+<p>logicalNeg - implement the ! operator, using all of<br>             the legal operators except !<br>  Examples: logicalNeg(3) &#x3D; 0, logicalNeg(0) &#x3D; 1<br>  Legal ops: ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 12<br>  Rating: 4 </p>
+</blockquote>
+<h3 id="bitMask"><a href="#bitMask" class="headerlink" title="bitMask"></a>bitMask</h3><blockquote>
+<p>bitMask - Generate a mask consisting of all 1’s<br>  lowbit and highbit<br>  Examples: bitMask(5,3) &#x3D; 0x38<br>  Assume 0 &lt;&#x3D; lowbit &lt;&#x3D; 31, and 0 &lt;&#x3D; highbit &lt;&#x3D; 31<br>  If lowbit &gt; highbit, then mask should be all 0’s<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 16<br>  Rating: 3</p>
+</blockquote>
+<h3 id="isGreater"><a href="#isGreater" class="headerlink" title="isGreater"></a>isGreater</h3><blockquote>
+<p>isGreater - if x &gt; y  then return 1, else return 0<br>  Example: isGreater(4,5) &#x3D; 0, isGreater(5,4) &#x3D; 1<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 24<br>  Rating: 3</p>
+</blockquote>
+<h3 id="logicalShift"><a href="#logicalShift" class="headerlink" title="logicalShift"></a>logicalShift</h3><blockquote>
+<p>logicalShift - shift x to the right by n, using a logical shift<br>  Can assume that 0 &lt;&#x3D; n &lt;&#x3D; 31<br>  Examples: logicalShift(0x87654321,4) &#x3D; 0x08765432<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 20<br>  Rating: 3 </p>
+</blockquote>
+<h3 id="satMul2"><a href="#satMul2" class="headerlink" title="satMul2"></a>satMul2</h3><blockquote>
+<p>satMul2 - multiplies by 2, saturating to Tmin or Tmax if overflow<br>  Examples: satMul2(0x30000000) &#x3D; 0x60000000<br>            satMul2(0x40000000) &#x3D; 0x7FFFFFFF (saturate to TMax)<br>            satMul2(0x60000000) &#x3D; 0x7FFFFFFF (saturate to TMax)<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 20<br>  Rating: 3</p>
+</blockquote>
+<h3 id="subOK"><a href="#subOK" class="headerlink" title="subOK"></a>subOK</h3><blockquote>
+<p>subOK - Determine if can compute x-y without overflow<br>  Example: subOK(0x80000000,0x80000000) &#x3D; 1,<br>           subOK(0x80000000,0x70000000) &#x3D; 0,<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 20<br>  Rating: 3</p>
+</blockquote>
+<h3 id="trueThreeFourths"><a href="#trueThreeFourths" class="headerlink" title="trueThreeFourths"></a>trueThreeFourths</h3><blockquote>
+<p>trueThreeFourths - multiplies by 3&#x2F;4 rounding toward 0,<br>  avoiding errors due to overflow<br>  Examples: trueThreeFourths(11) &#x3D; 8<br>            trueThreeFourths(-9) &#x3D; -6<br>            trueThreeFourths(1073741824) &#x3D; 805306368 (no overflow)<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 20<br>  Rating: 4</p>
+</blockquote>
+<h3 id="isPower2"><a href="#isPower2" class="headerlink" title="isPower2"></a>isPower2</h3><blockquote>
+<p>isPower2 - returns 1 if x is a power of 2, and 0 otherwise<br>  Examples: isPower2(5) &#x3D; 0, isPower2(8) &#x3D; 1, isPower2(0) &#x3D; 0<br>  Note that no negative number is a power of 2.<br>  Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br>  Max ops: 20<br>  Rating: 4</p>
+</blockquote>
+<h3 id="float-i2f"><a href="#float-i2f" class="headerlink" title="float_i2f"></a>float_i2f</h3><blockquote>
+<p>float_i2f - Return bit-level equivalent of expression (float) x<br>  Result is returned as unsigned int, but<br>  it is to be interpreted as the bit-level representation of a<br>  single-precision floating point values.<br>  Legal ops: Any integer&#x2F;unsigned operations incl. ||, &amp;&amp;. also if, while<br>  Max ops: 30<br>  Rating: 4</p>
+</blockquote>
+<h3 id="howManyBits"><a href="#howManyBits" class="headerlink" title="howManyBits"></a>howManyBits</h3><blockquote>
+<p>howManyBits - return the minimum number of bits required to represent x in<br>            two’s complement<br> Examples: howManyBits(12) &#x3D; 5<br>           howManyBits(298) &#x3D; 10<br>           howManyBits(-5) &#x3D; 4<br>           howManyBits(0)  &#x3D; 1<br>           howManyBits(-1) &#x3D; 1<br>           howManyBits(0x80000000) &#x3D; 32<br> Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;<br> Max ops: 90<br> Rating: 4</p>
+</blockquote>
+<h3 id="float-half"><a href="#float-half" class="headerlink" title="float_half"></a>float_half</h3><blockquote>
+<p>float_half - Return bit-level equivalent of expression 0.5*f for<br>  floating point argument f.<br>  Both the argument and result are passed as unsigned int’s, but<br>  they are to be interpreted as the bit-level representation of<br>  single-precision floating point values.<br>  When argument is NaN, return argument<br>  Legal ops: Any integer&#x2F;unsigned operations incl. ||, &amp;&amp;. also if, while<br>  Max ops: 30<br>  Rating: 4</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
     <title>汇编语言及IDA应用</title>
     <url>/posts/d37a56bd.html</url>
     <content><![CDATA[<h1 id="汇编语言介绍"><a href="#汇编语言介绍" class="headerlink" title="汇编语言介绍"></a>汇编语言介绍</h1><p>汇编语言是一种计算机语言，它与机器语言相对应，使用符号代替数字和指令代码，更容易理解和编写。汇编语言允许程序员以更低层次的方式操作计算机硬件，使用它可以编写高效、精确的系统程序。</p>
